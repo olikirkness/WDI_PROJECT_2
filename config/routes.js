@@ -8,7 +8,8 @@ router.route('/')
   .get(statics.homepage);
 
 router.route('/lists')
-  .get(lists.index);
+  .get(lists.index)
+  .post(lists.create);
 
 router.route('/lists/new')
   .get(lists.new);

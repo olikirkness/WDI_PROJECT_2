@@ -1,1 +1,9 @@
 <h1>Index</h1>
+
+<%= lists %>
+
+<% lists.forEach ((list)  => {%>
+    <h4><%=list.name%></h4>
+    <h4><%=list.description%></h4>
+
+<%})%>
