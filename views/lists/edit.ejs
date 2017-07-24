@@ -3,7 +3,8 @@
 <%= list %>
 <div class="container">
   <div class="row">
-    <form class="col s12">
+    <form method="POST" action="/lists/<%= list.id %>" class="col s12 editForm">
+      <input type="hidden" name="_method" value="PUT">
       <div class="row">
         <div class="input-field col s12">
           <input class="listTitle" type="text" class="validate" value="<%=list.name%>">
@@ -14,6 +15,7 @@
           <label class="active" for="destination">Where are are going?</label>
         </div>
       </div>
+      
 
       <div class="row">
         <a href="#"class="btn reSubmit" type="button" name="search">Search</a>
