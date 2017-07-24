@@ -32,7 +32,7 @@ router.route('/lists/new')
 router.route('/lists/:id')
   .get(lists.show)
   .delete(lists.delete)
-  // .put(lists.update);
+  .post(lists.update);
 
 
 router.route('/lists/:id/edit')

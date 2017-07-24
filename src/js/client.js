@@ -83,6 +83,9 @@ listForm.getData = function(){
 };
 
 listForm.itemClick = function(){
+  this.url = $(location).attr('href');
+  this.segments = this.url.split( '/' );
+  this.id = this.segments[4];
   console.log('hello');
   console.log(this.usedIndex.length);
   listForm.itemClicked = $('.venue')[listForm.index];
@@ -131,26 +134,28 @@ listForm.submitForm = function(){
 
   }else{
     if(this.title){
-      this.setUp();
-      $.ajax({
-        url: '/lists/:id', // your api url
-        method: 'PUT', // method is any HTTP method
-        data: {list: $(this.list)}, // data as js object
-        success: function() {
-          console.log('hello');
-          window.location.href='/lists';
-        }
-      });
 
-      // $.post('/lists/:id', this.list)
-      // .done(function(){
-      //   console.log(this.list);
-      //   window.location.href='/lists/_id';
-      // })
-      // .fail(function(err){
-      //   console.log(err);
-      //   alert('Something went wrong');
+
+      // $.ajax({
+      //   url: '/lists/:id', // your api url
+      //   method: 'PUT', // method is any HTTP method
+      //   data: {list: $(this.list)}, // data as js object
+      //   success: function() {
+      //     console.log('hello');
+      //     window.location.href='/lists';
+      //   }
       // });
+      console.log(listForm);
+      $.post(`/lists/${this.id}`, this.list)
+      .done(function(){
+        listForm.setUp();
+        console.log(this.list);
+        window.location.href='/lists';
+      })
+      .fail(function(err){
+        console.log(err);
+        alert('Something went wrong');
+      });
 
     }else{
       alert('you need a title');

@@ -7,6 +7,7 @@ const { port, secret }        = require('./config/env');
 const methodOverride = require('method-override');
 const session   = require('express-session');
 const User                    = require('./models/users');
+const cors           = require('cors');
 
 mongoose.Promise     = require('bluebird');
 const routes         = require('./config/routes');
@@ -19,7 +20,7 @@ mongoose.Promise = require('bluebird');
 
 app.set('view engine', 'ejs');
 app.set('views', `${__dirname}/views`);
-
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.static(`${__dirname}/public`));
 app.use(expressLayouts);

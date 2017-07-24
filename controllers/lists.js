@@ -16,7 +16,6 @@ function listsIndex(req, res) {
   .populate('items')
   .exec()
   .then(lists => {
-    console.log(`line 20 ${lists}`);
     res.render('lists/index', { lists });
   })
   .catch(err => {
@@ -51,13 +50,13 @@ function listsCreate(req, res){
 
 function listsEdit(req, res, next) {
   Lists
-    .findById(req.params.id)
-    .populate('items')
-    .then((list) => {
-      if(!list) return res.status(404).render('statics/404');
-      res.render('lists/edit', { list });
-    })
-    .catch(next);
+  .findById(req.params.id)
+  .populate('items')
+  .then((list) => {
+    if(!list) return res.status(404).render('statics/404');
+    res.render('lists/edit', { list });
+  })
+  .catch(next);
 }
 
 function listsShow(req, res, next){
@@ -75,30 +74,48 @@ function listsShow(req, res, next){
 
 function listsDelete(req, res, next) {
   Lists
-    .findById(req.params.id)
-    .then((list) => {
-      if(!list) return res.status(404).render('statics/404');
-      return list.remove();
-    })
-    .then(() => res.redirect('/lists'))
-    .catch(next);
+  .findById(req.params.id)
+  .then((list) => {
+    if(!list) return res.status(404).render('statics/404');
+    return list.remove();
+  })
+  .then(() => res.redirect('/lists'))
+  .catch(next);
 }
 
 function listsUpdate(req, res, next) {
-  console.log(req.body);
+  // console.log(req.params.id, req.body);
   Lists
-    .findById(req.params.id)
-    .then((list) => {
-      if(!list) return res.status(404).render('statics/404');
-
-      for(const field in req.body) {
-        list[field] = req.body[field];
-      }
-
-      return list.save();
+  .findById(req.params.id)
+  .then((list) => {
+    console.log('this is the list', list);
+    return Items
+    .find({_id: {$in: list.items}})
+    .remove()
+    .then(()=>{
+      console.log('removed');
+      const items = req.body.items;
+      return Items
+      .create(items);
     })
-    .then((list) => res.redirect(`/lists/${list.id}`))
-    .catch(next);
+    .then((createdItems) =>{
+      console.log('createdItems', createdItems);
+      if(!list)
+        return res.status(404).render('statics/404');
+      console.log(createdItems);
+      const createdItemIds = createdItems.map((item) => item._id);
+      list.items = createdItemIds;
+      for(const field in req.body) {
+        console.log(field);
+        if (field !== 'items') {
+          list.set(field, req.body[field]);
+        }
+        return list.save();
+      }
+    });
+  })
+  .then((list) => res.redirect(`/lists/${list.id}`))
+  .catch(next);
 }
 
 
