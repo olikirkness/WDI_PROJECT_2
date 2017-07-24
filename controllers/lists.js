@@ -84,6 +84,23 @@ function listsDelete(req, res, next) {
     .catch(next);
 }
 
+function listsUpdate(req, res, next) {
+  console.log(req.body);
+  Lists
+    .findById(req.params.id)
+    .then((list) => {
+      if(!list) return res.status(404).render('statics/404');
+
+      for(const field in req.body) {
+        list[field] = req.body[field];
+      }
+
+      return list.save();
+    })
+    .then((list) => res.redirect(`/lists/${list.id}`))
+    .catch(next);
+}
+
 
 module.exports = {
   index: listsIndex,
@@ -91,5 +108,6 @@ module.exports = {
   create: listsCreate,
   show: listsShow,
   delete: listsDelete,
-  edit: listsEdit
+  edit: listsEdit,
+  update: listsUpdate
 };

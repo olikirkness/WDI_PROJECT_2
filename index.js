@@ -24,6 +24,7 @@ app.use(morgan('dev'));
 app.use(express.static(`${__dirname}/public`));
 app.use(expressLayouts);
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(methodOverride((req) => {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     const method = req.body._method;

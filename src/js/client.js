@@ -132,14 +132,25 @@ listForm.submitForm = function(){
   }else{
     if(this.title){
       this.setUp();
-      $.post('/lists', this.list)
-      .done(function(){
-        window.location.href='/lists';
-      })
-      .fail(function(err){
-        console.log(err);
-        alert('Something went wrong');
+      $.ajax({
+        url: '/lists/:id', // your api url
+        method: 'PUT', // method is any HTTP method
+        data: {list: $(this.list)}, // data as js object
+        success: function() {
+          console.log('hello');
+          window.location.href='/lists';
+        }
       });
+
+      // $.post('/lists/:id', this.list)
+      // .done(function(){
+      //   console.log(this.list);
+      //   window.location.href='/lists/_id';
+      // })
+      // .fail(function(err){
+      //   console.log(err);
+      //   alert('Something went wrong');
+      // });
 
     }else{
       alert('you need a title');

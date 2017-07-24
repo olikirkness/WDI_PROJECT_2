@@ -3,7 +3,7 @@ const router  = express.Router();
 
 const statics = require('../controllers/statics');
 const lists = require('../controllers/lists');
-const listItems = require('../controllers/listItems');
+// const listItems = require('../controllers/listItems');
 const registrations = require('../controllers/registrations');
 const sessions = require('../controllers/sessions');
 
@@ -25,13 +25,16 @@ router.route('/lists')
   .get(lists.index)
   .post(lists.create);
 
+
 router.route('/lists/new')
   .get(lists.new);
 
 router.route('/lists/:id')
   .get(lists.show)
-  .delete(lists.delete);
-  
+  .delete(lists.delete)
+  // .put(lists.update);
+
+
 router.route('/lists/:id/edit')
   .get(lists.edit);
 
