@@ -14,13 +14,14 @@
     "express": "^4.15.2",
     "express-ejs-layouts": "^2.3.0",
     "express-flash": "^0.0.2",
-    "express-session": "^1.15.2",
+    "express-session": "^1.15.4",
     "forever": "^0.15.3",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.4",
     "morgan": "^1.8.1",
     "nodemon": "^1.11.0",
-    "request-promise": "^4.2.1"
+    "request-promise": "^4.2.1",
+    "sessions": "^0.0.2-7"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",

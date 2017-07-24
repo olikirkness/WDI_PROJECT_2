@@ -1,9 +1,13 @@
 <h1>Index</h1>
 
-<%= lists %>
-
-<% lists.forEach ((list)  => {%>
-    <h4><%=list.name%></h4>
-    <h4><%=list.description%></h4>
-
-<%})%>
+<%# lists %>
+<div class="container">
+  <div class="row">
+    <% lists.forEach ((list)  => {%>
+      <a href="/lists/<%= list.id %>">
+        <h4><%=list.name%></h4>
+        <h6><%=list.location%></h6>
+      </a>
+    <%})%>
+  </div>
+</div>

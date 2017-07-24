@@ -1,0 +1,21 @@
+<%= list %>
+
+<div class="container">
+  <div class="row">
+    <h1><%=list.name%></h1>
+    <h2><%=list.location%></h2>
+
+    <% for (var i = 0; i < list.items.length; i++) {%>
+
+      <ul class="col s6 offset-s3">
+        <li><%=list.items[i].name%></li>
+        <li><%=list.items[i].lat%></li>
+        <li><%=list.items[i].long%></li>
+        <li><%=list.items[i].url%></li>
+      </ul>
+      <%}%>
+      <div class="row">
+        <a href="#"class="btn add" type="button" name="search">Add</a>
+      </div>
+    </div>
+  </div>

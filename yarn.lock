@@ -1311,7 +1311,7 @@ express-flash@^0.0.2:
   dependencies:
     connect-flash "0.1.x"
 
-express-session@^1.15.2:
+express-session@^1.15.4:
   version "1.15.4"
   resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.15.4.tgz#5e2cdcf6defe3c1eda4e980f13b986cc58cfb954"
   dependencies:
@@ -3705,6 +3705,10 @@ serve-static@1.12.3:
 server-destroy@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/server-destroy/-/server-destroy-1.0.1.tgz#f13bf928e42b9c3e79383e61cc3998b5d14e6cdd"
+
+sessions@^0.0.2-7:
+  version "0.0.2-7"
+  resolved "https://registry.yarnpkg.com/sessions/-/sessions-0.0.2-7.tgz#99bfb3485eab88751059f52de89e2c8d1ffbe7e2"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"

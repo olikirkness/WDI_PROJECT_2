@@ -7,14 +7,16 @@
 
 // const rp = require('request-promise');
 const Lists = require('../models/lists');
+const Items = require('../models/listItems');
 
 function listsIndex(req, res) {
-  console.log('hello');
+
   Lists
   .find()
+  .populate('items')
   .exec()
   .then(lists => {
-    console.log(lists);
+    console.log(`line 20 ${lists}`);
     res.render('lists/index', { lists });
   })
   .catch(err => {
@@ -27,17 +29,42 @@ function listsNew(req, res){
 }
 
 function listsCreate(req, res){
-  console.log(req.body);
-  console.log('hello');
-  Lists
-    .create(req.body)
+  const items = req.body.items;
+  const list = req.body;
+  delete list.items;
+  Items
+  .create(items)
+  .then(createdItems => {
+    const createdItemIds = createdItems.map((item) => item._id);
+    list.items = createdItemIds;
+    return Lists
+    .create(list)
     .then(() => {
       res.redirect('/lists');
     });
+  })
+
+  .catch(e => { throw new Error(e); });
+
 }
+
+function listsShow(req, res, next){
+  Lists
+  .findById(req.params.id)
+  .populate('items')
+  .exec()
+  .then((list) => {
+    console.log(list);
+    if(!list) return res.status(404).render('statics/404');
+    res.render('lists/show', { list });
+  })
+  .catch(next);
+}
+
 
 module.exports = {
   index: listsIndex,
   new: listsNew,
-  create: listsCreate
+  create: listsCreate,
+  show: listsShow
 };
