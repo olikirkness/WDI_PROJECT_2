@@ -6,7 +6,6 @@
     <h2><%=list.location%></h2>
 
     <% for (var i = 0; i < list.items.length; i++) {%>
-
       <ul class="col s6 offset-s3">
         <li><%=list.items[i].name%></li>
         <li><%=list.items[i].lat%></li>
@@ -15,7 +14,11 @@
       </ul>
       <%}%>
       <div class="row">
-        <a href="#"class="btn add" type="button" name="search">Add</a>
+        <a href="/lists/<%= list.id %>/edit"class="btn add" type="button" name="search">Add</a>
       </div>
+      <form method="POST" action="/lists/<%= list.id %>">
+        <input type="hidden" name="_method" value="DELETE">
+        <button class="btn btn-danger">Delete</button>
+      </form>
     </div>
   </div>
