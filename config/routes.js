@@ -4,6 +4,8 @@ const router  = express.Router();
 const statics = require('../controllers/statics');
 const lists = require('../controllers/lists');
 // const listItems = require('../controllers/listItems');
+const users = require('../controllers/users');
+
 const registrations = require('../controllers/registrations');
 const sessions = require('../controllers/sessions');
 
@@ -24,7 +26,6 @@ router.route('/')
 router.route('/lists')
   .get(lists.index)
   .post(lists.create);
-
 
 router.route('/lists/new')
   .get(lists.new);
@@ -52,5 +53,8 @@ router.route('/login')
 
 router.route('/logout')
   .get(sessions.delete);
+
+router.route('/user/:id')
+  .get(users.show);
 
 module.exports = router;

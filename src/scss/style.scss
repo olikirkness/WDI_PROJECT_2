@@ -1,5 +1,6 @@
 html {
   // background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  color: #2d5c7f;
 }
 
 .venue{
@@ -9,6 +10,46 @@ html {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+.btn{
+  background-color: #ff8f56;
+}
+.input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
+   border-bottom: 1.2px solid #2d5c7f !important;
+   box-shadow: 0 1px 0 0 #2d5c7f !important;
+}
+.input-field input[type=text] {
+   border-bottom: 1.2px solid #bbb !important;
+   box-shadow: 0 1px 0 0 #bbb !important;
+}
+.input-field input{
+     color: #000;
+   }
+
+nav{
+  background-color: white;
+  box-shadow: none;
+  border-bottom: 2px solid #ccc;
+  .right{
+    margin-right: 30px;
+  }
+  .center{
+    top: 5px;
+  }
+}
+
+.error, .titleError{
+  padding: 0;
+  height: 30px;
+  margin-bottom: -15px;
+  position: relative;
+  color: #f44336;
+  margin-left: 20px;
+}
+.titleError{
+  margin-bottom: 10px;
+}
+
+
 
 .category{
   font-size: 15px;

@@ -1,22 +1,23 @@
 <nav>
    <div class="nav-wrapper">
-     <a href="#" class="brand-logo right">Itinerist</a>
+     <li class="brand-logo grey-text text-darken-1 right nav-item">itinerist</li>
+     <li class="brand-logo center nav-item"><img src="http://i.imgur.com/7z20cNP.png" height="50px"alt=""></li>
      <ul id="nav-mobile" class="left hide-on-med-and-down">
-       <li><a href="/lists">Lists</a></li>
-       <li><a href="/lists/new">New List</a></li>
+       <li class="grey-text text-darken-1"><a href="/lists" class="grey-text text-darken-1">Lists</a></li>
+       <li class="nav-item"><a href="/lists/new" class="grey-text text-darken-1">New List</a></li>
        <% if (locals.isLoggedIn) { %>
           <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
+            <a class="grey-text text-darken-1" href="/logout">Logout</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Hello <%= locals.user.username %></a>
+            <a class="grey-text text-darken-1" href="/user/<%= user.id %>">Hello <%= locals.user.username %></a>
           </li>
         <% } else { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Log In</a>
+          <li class="grey-text text-darken-1">
+            <a class="grey-text text-darken-1" href="/login">Log In</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/register">Register</a>
+            <a class="grey-text text-darken-1" href="/register">Register</a>
           </li>
         <% } %>
      </ul>

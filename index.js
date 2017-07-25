@@ -3,12 +3,11 @@ const expressLayouts = require('express-ejs-layouts');
 const morgan         = require('morgan');
 const mongoose       = require('mongoose');
 const bodyParser     = require('body-parser');
-const { port, secret }        = require('./config/env');
+const { port, secret }    = require('./config/env');
 const methodOverride = require('method-override');
 const session   = require('express-session');
-const User                    = require('./models/users');
+const User           = require('./models/users');
 const cors           = require('cors');
-
 mongoose.Promise     = require('bluebird');
 const routes         = require('./config/routes');
 const app            = express();
@@ -42,10 +41,8 @@ app.use(session({
 
 
 app.use((req, res, next) => {
-  // if no id inside req.session, carry on with next peice of middleware.
   if (!req.session.userId) return next();
 
-  // if id, find User with that id and make accessable inside views.
   User
     .findById(req.session.userId)
     .exec()
@@ -59,10 +56,8 @@ app.use((req, res, next) => {
 
       req.session.userId = user._id;
 
-      //I want to make the current users information accessable in any route.
       req.user = user;
 
-      // adding properties into the locals object meaning i can access these inside ANY view.
       res.locals.user = user;
       res.locals.isLoggedIn = true;
 

@@ -28,11 +28,13 @@ function listsNew(req, res){
 }
 
 function listsCreate(req, res){
+  req.body.createdBy = req.user._id;
   const items = req.body.items;
   const list = req.body;
   delete list.items;
   Items
   .create(items)
+
   .then(createdItems => {
     const createdItemIds = createdItems.map((item) => item._id);
     list.items = createdItemIds;
@@ -62,6 +64,7 @@ function listsEdit(req, res, next) {
 function listsShow(req, res, next){
   Lists
   .findById(req.params.id)
+  .populate('createdBy')
   .populate('items')
   .exec()
   .then((list) => {
