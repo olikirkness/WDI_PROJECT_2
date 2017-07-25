@@ -8,6 +8,7 @@ function usersShow(req, res){
   .then(user => {
     List
     .find({createdBy: user._id})
+    .populate('items')
     .exec()
     .then(lists => {
       console.log(user, lists);

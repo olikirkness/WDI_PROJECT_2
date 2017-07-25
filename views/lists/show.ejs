@@ -9,20 +9,26 @@
         <li><h4><%=list.items[i].name%></h4></li>
         <li><%=list.items[i].lat%></li>
         <li><%=list.items[i].long%></li>
+        <li><%=list.items[i].category%></li>
         <% if (list.items[i].url){ %>
           <li>Visit their website <a href="<%=list.items[i].url%>">here</a></li>
         <%}%>
-        <li><%=list.items[i].category%></li>
       </ul>
       <%}%>
-      <div class="row">
-        <a href="/lists/<%= list.id %>/edit"class="btn edit" type="button" name="search">Edit</a>
-      </div>
-      <form method="POST" action="/lists/<%= list.id %>">
-        <input type="hidden" name="_method" value="DELETE">
-        <button class="btn btn-danger">Delete</button>
-      </form>
-    </div>
+
+      <%if(!locals.user){%>
+
+      <%}else if(locals.user.id === list.createdBy.id){%>
+        <div class="row">
+          <a href="/lists/<%= list.id %>/edit"class="btn edit" type="button" name="search">Edit</a>
+        </div>
+        <form method="POST" action="/lists/<%= list.id %>">
+          <input type="hidden" name="_method" value="DELETE">
+          <button class="btn btn-danger">Delete</button>
+        </form>
+        </div>
+      <%}%>
   </div>
+
 
   <h4>Created by: <%=list.createdBy.username%></h4>

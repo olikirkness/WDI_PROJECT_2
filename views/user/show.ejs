@@ -1,9 +1,27 @@
-<h1><%= user.username%></h1>
-<h2><%= user.email%></h2>
-<%= lists %>
 
-<ul>
-<% lists.forEach(list =>{%>
-    <li> <%= list.name %> </li>
-  <% }); %>
-</ul>
+<div class="container">
+  <div class="row">
+    <h1><%= user.username%>'s profile</h1>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <ul>
+    <% lists.forEach(list =>{%>
+      <a href="/lists/<%= list.id %>">
+      <div class="col s6 userList">
+        <h4> <%= list.name %> </h4>
+        <%list.items.forEach(item =>{%>
+          <div class="listItems">
+            <li><h6><%=item.name%></h6></li>
+            <li><%=item.category%></li>
+          </div>
+        <%})%>
+
+      </div>
+      </a>
+      <% }); %>
+    </ul>
+  </div>
+
+</div>

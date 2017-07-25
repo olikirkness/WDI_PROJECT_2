@@ -4,8 +4,9 @@
      <li class="brand-logo center nav-item"><img src="http://i.imgur.com/7z20cNP.png" height="50px"alt=""></li>
      <ul id="nav-mobile" class="left hide-on-med-and-down">
        <li class="grey-text text-darken-1"><a href="/lists" class="grey-text text-darken-1">Lists</a></li>
-       <li class="nav-item"><a href="/lists/new" class="grey-text text-darken-1">New List</a></li>
+
        <% if (locals.isLoggedIn) { %>
+         <li class="nav-item"><a href="/lists/new" class="grey-text text-darken-1">New List</a></li>
           <li class="nav-item">
             <a class="grey-text text-darken-1" href="/logout">Logout</a>
           </li>

@@ -4,7 +4,7 @@ itinerist.setUp = function(){
   this.submitBtn = $('.submit');
   this.reSubmitBtn = $('.reSubmit');
   this.submitStatus = false;
-
+  // this.googlePhotos();
   initialize();
   function initialize() {
     var input = document.getElementById('destinationAuto');
@@ -18,12 +18,12 @@ itinerist.setUp = function(){
       if($('.pTitle')){
         $('.pTitle').remove()
       }
-
       $(`<p class="pTitle">Please give your list a title.</P>`).appendTo($('.titleError'));
 
       $('.listTitle').addClass('invalid');
 
       console.log('error');
+
     }else{
       itinerist.formSubmit();
     }
@@ -37,62 +37,30 @@ itinerist.setUp = function(){
 };
 
 
-// this.initialize = function() {
-//   initAutocomplete();
-//   function initAutocomplete() {
-//     // Create the autocomplete object, restricting the search to geographical
-//     // location types.
-//     this.autocomplete = new google.maps.places.Autocomplete(
-//         /** @type {!HTMLInputElement} */(document.getElementById('YOUR_INPUT_ELEMENT_ID')),
-//         {types: ['geocode']});
+// itinerist.googlePhotos = function() {
+//   this.allLists = $('.index-img');
+//   this.listLocations = $('.listLocation');
+//   console.log(this.listLocations[1]);
 //
-//     // When the user selects an address from the dropdown, populate the address
-//     // fields in the form.
-//     this.autocomplete.addListener('place_changed', fillInAddress);
+//   for (var i = 0; i < this.listLocations.length; i++) {
+//     console.log(itinerist.listLocations[i].text());
+//     //
 //   }
 //
-//   function fillInAddress() {
-//     // Get the place details from the autocomplete object.
-//     this.place = this.autocomplete.getPlace();
-//
-//   }
-//   }
-
-// itinerist.getFlickrImage = function(){
-  //   Key:
-  // 41fd6b3d04ea754c08d8b2539dab07d5
-  //157041428@N06
-  // Secret:
-  // d0caae690651b524
-
-  //AIzaSyDJ3zzkIHjjutvXMT2yPX5C6b28OB_FQ_8
-
-  // ApplicationItinerist Key: 4gfcxb7mmrdjewckghe6sz4u Secret: 325n6fpNP2PgGgPbvxhYYWUj9cENcgYxmJZhaZBnh7FTm
-  //
-  // $.get('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyDJ3zzkIHjjutvXMT2yPX5C6b28OB_FQ_8')
-  // .done(data => {
-  //   console.log('hello');
-  //   console.log(data);
-  //
-  // });
-//
-//   $.ajax({
-//     url: 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyDJ3zzkIHjjutvXMT2yPX5C6b28OB_FQ_8',
-//     type: 'GET',
-//     dataType: 'jsonp',
-//     cache: false,
-//     success: function(data){
-//       console.log('hello');
-//
-//     }
-//   });
 //
 // };
 
+
+//   $
+//   .get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyDJ3zzkIHjjutvXMT2yPX5C6b28OB_FQ_8')
+//   .done(data => {
+//     console.log(data);
+//   });
+// };
+
+
+
 itinerist.formSubmit = function(){
-
-
-
 
   this.getData();
 };
@@ -100,24 +68,43 @@ itinerist.formSubmit = function(){
 itinerist.getData = function(){
 
   this.location = $('.destination').val();
+  this.city = this.location.split(',')[0];
+  console.log(this.city);
   this.usedIndex = [51];
+
   $.get(`https://api.foursquare.com/v2/venues/search?near=${this.location}&limit=50&client_id=R3KIGZLISIYT0YMGLQDNR2WKCN4LA1CMKNQSLJCLGDBIQC1L&client_secret=GQK1QDAAYHM5FOXS3NNHIRPXDYM1ZKB2N4IKFWEBKNPWJ0VW&v=20170720`)
   .done(data => {
 
+    $.get(`https://api.unsplash.com/photos/random?client_id=9de52c542a6d745606274c8b0767976044f4acab3c341ffa92db5bb79edbb93a&query=${this.city}&featured=true`)
+    .done(response => {
+
+      console.log(response);
+      this.photo = response.urls.small;
+      console.log(this.photo, 'line 86');
+      this.title = $('.listTitle').val();
+      this.list = {
+        name: this.title,
+        location: this.location,
+        photo: this.photo,
+        items: []
+      };
+
+      console.log(this.list);
+
+    });
+    console.log(this.photo, '<------------');
+
     console.log(this.location);
-    this.title = $('.listTitle').val();
+
     this.form = $('form');
     this.form.css('display', 'none');
-    this.list = {
-      name: this.title,
-      location: this.location,
-      items: []
-    };
 
-    this.itemUl = $(`<ul class="listItems"></ul>`).appendTo($('.container'));
+    console.log(this.list);
+
+    this.itemUl = $(`<ul class="searchListItems"></ul>`).appendTo($('.container'));
 
     for (var i = 0; i < data.response.venues.length; i++) {
-      $(`<div class="venue"><li class="venueName">${data.response.venues[i].name}</li></div>`).appendTo($('.listItems'));
+      $(`<div class="venue"><li class="venueName">${data.response.venues[i].name}</li></div>`).appendTo($('.searchListItems'));
       if(data.response.venues[i].categories.length !==0){
         $(`<li class="category">${data.response.venues[i].categories[0].name}</li>"`).appendTo($('.venue')[i]);
         console.log(data.response.venues[i].categories[0].name);
@@ -125,6 +112,7 @@ itinerist.getData = function(){
     }
     $('<button class="btn submitBtn" type="button" name="button">Submit</button>').appendTo($('.container'));
     this.submitBtn = $('.submitBtn');
+
     this.submitBtn.click(function(){
       itinerist.submitForm();
     });
@@ -141,6 +129,7 @@ itinerist.getData = function(){
       itinerist.itemLong = data.response.venues[itinerist.index].location.lng;
       itinerist.itemUrl = data.response.venues[itinerist.index].url;
       itinerist.itemCategory = data.response.venues[itinerist.index].categories[0].name;
+
       itinerist.listItem = {
         name: itinerist.itemName,
         lat: itinerist.itemLat,
@@ -156,7 +145,7 @@ itinerist.getData = function(){
   })
   .fail(function() {
     if($('.p')){
-      $('.p').remove()
+      $('.p').remove();
     }
 
     $(`<p class="p">There is no data on that location. Please try something else.</P>`).appendTo($('.error'));
@@ -168,11 +157,10 @@ itinerist.getData = function(){
 };
 
 itinerist.itemClick = function(){
+
   this.url = $(location).attr('href');
   this.segments = this.url.split( '/' );
   this.id = this.segments[4];
-  console.log('hello');
-  console.log(this.usedIndex.length);
   itinerist.itemClicked = $('.venue')[itinerist.index];
   for (var i = 0; i < this.usedIndex.length; i++) {
     this.check = false;
@@ -191,7 +179,7 @@ itinerist.itemClick = function(){
       this.list.items.push(this.listItem);
     }
     if(this.check){
-      $(itinerist.itemClicked).css('background-color', '#ee6e73');
+      $(itinerist.itemClicked).css('background-color', '#ff8f56');
       break;
     }
 

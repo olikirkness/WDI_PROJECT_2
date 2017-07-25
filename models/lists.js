@@ -5,8 +5,10 @@ const mongoose = require('mongoose');
 const listSchema = new mongoose.Schema({
   name: { type: String, required: true },
   location: { type: String, required: true },
+  photo: {type: String},
   items: [{type: mongoose.Schema.ObjectId, ref: 'Item'}],
   createdBy: {type: mongoose.Schema.ObjectId, ref: 'User' }
+
 });
 
 
