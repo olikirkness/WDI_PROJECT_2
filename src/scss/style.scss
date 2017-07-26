@@ -1,27 +1,28 @@
 html {
   // background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-  color: #2d5c7f;
+  color: #aaa;
+  font-family: 'Raleway', sans-serif;
 }
 #map{
   height: 600px;
   width: 600px;
 }
 .blue{
-  background-color: #2d5c7f,
-  color: white
+  background-color: #2d5c7f;
+  color: white;
 }
-.yellow{
-  background-color: #2d5c7f,
-  color: white
-}
-.orange{
-  background-color: #2d5c7f,
-  color: white
-}
-.red{
-  background-color: #2d5c7f,
-  color: white
-}
+// .yellow{
+//   background-color: #2d5c7f,
+//   color: white,
+// }
+// .orange{
+//   background-color: #2d5c7f,
+//   color: white,
+// }
+// .red{
+//   background-color: #2d5c7f,
+//   color: white,
+// }
 
 .venue{
   margin-top: 10px;
@@ -33,6 +34,23 @@ html {
 .btn{
   background-color: #ff8f56;
 }
+.btn:hover{
+  background-color: #984a59;
+}
+.show-header{
+  width: 100%;
+  margin-top: 0px;
+  background-color: #2d5c7f;
+  height:200px;
+  overflow: hidden;
+  img{
+    width: 100%;
+    margin-top: -30%;
+	  display: block;
+    position: relative;
+  }
+}
+
 .input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
    border-bottom: 1.2px solid #2d5c7f !important;
    box-shadow: 0 1px 0 0 #2d5c7f !important;

@@ -1,7 +1,7 @@
 var itinerist = itinerist || {};
 
 itinerist.setUp = function(){
-
+  $(".button-collapse").sideNav();
   console.log('hello');
 
   $('.showMap').click(function(){
@@ -35,8 +35,6 @@ itinerist.setUp = function(){
     }else{
       itinerist.formSubmit();
     }
-
-
   });
   this.reSubmitBtn.click(function(){
     itinerist.submitStatus = true;
@@ -71,7 +69,7 @@ itinerist.getData = function(){
     $.get(`https://api.unsplash.com/photos/random?client_id=9de52c542a6d745606274c8b0767976044f4acab3c341ffa92db5bb79edbb93a&query=${this.city}&featured=true`)
     .done(response => {
 
-      this.list.photo = response.urls.small;
+      this.list.photo = response.urls.regular;
 
     })
     .fail(console.log('error'));
@@ -106,7 +104,10 @@ itinerist.getData = function(){
       itinerist.itemLat = data.response.venues[itinerist.index].location.lat;
       itinerist.itemLong = data.response.venues[itinerist.index].location.lng;
       itinerist.itemUrl = data.response.venues[itinerist.index].url;
-      itinerist.itemCategory = data.response.venues[itinerist.index].categories[0].name;
+      if(data.response.venues[itinerist.index].categories.length >0){
+        itinerist.itemCategory = data.response.venues[itinerist.index].categories[0].name;
+      }
+
 
       itinerist.listItem = {
         name: itinerist.itemName,
@@ -161,7 +162,6 @@ itinerist.itemClick = function(){
 
   }
 
-
 };
 
 itinerist.submitForm = function(){
@@ -197,8 +197,6 @@ itinerist.submitForm = function(){
       alert('you need a title');
     }
   }
-
-
 
 };
 
@@ -252,11 +250,6 @@ itinerist.map = function(){
     console.log(itinerist.marker);
 
   }
-
-
-
-
-
 
   map.fitBounds(this.bounds);
 

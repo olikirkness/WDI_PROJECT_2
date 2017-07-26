@@ -1,9 +1,20 @@
 
+<div class="show-header">
+  <img src="<%=list.photo%>" alt="">
+  <div class="container">
+    <div class="row">
+      <h1><%=list.name%></h1>
+      <h2><%=list.location%></h2>
+    </div>
+
+  </div>
+
+</div>
+
 <div class="container" >
   <div class="row">
 
-    <h1><%=list.name%></h1>
-    <h2><%=list.location%></h2>
+
 
     <% for (var i = 0; i < list.items.length; i++) {%>
       <div class="listItemLat" data-lat="<%=list.items[i].lat%>"></div>
