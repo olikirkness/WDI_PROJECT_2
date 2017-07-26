@@ -9,7 +9,7 @@
     <ul>
     <% lists.forEach(list =>{%>
       <a href="/lists/<%= list.id %>">
-      <div class="col s6 userList">
+      <div class="col s5 userList">
         <h4> <%= list.name %> </h4>
         <%list.items.forEach(item =>{%>
           <div class="listItems">
@@ -17,7 +17,6 @@
             <li><%=item.category%></li>
           </div>
         <%})%>
-
       </div>
       </a>
       <% }); %>
