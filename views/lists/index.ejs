@@ -5,21 +5,22 @@
   <h2>Feed</h2>
   <div class="row">
     <% lists.forEach ((list)  => {%>
-    <div class="col s12 m6">
+      <a href="/lists/<%= list.id %>">
+    <div class="col s12 m6" href="/lists/<%= list.id %>">
       <div class="card">
         <div class="card-image">
-
+        <div class="imageFrame">
           <img class="index-img" src="<%= list.photo%>">
-
+          </div>
           <span class="card-title white-text text-darken-1"><%=list.name%></span>
-          <a class="btn-floating halfway-fab waves-effect waves-light red" href="/lists/<%= list.id %>"><i class="material-icons">+</i></a>
+
         </div>
         <div class="card-content">
           <p class="listLocation"><%=list.location%></p>
         </div>
       </div>
     </div>
-
+</a>
 
     <%})%>
   </div>

@@ -6,9 +6,11 @@ const bodyParser     = require('body-parser');
 const { port, secret }    = require('./config/env');
 const methodOverride = require('method-override');
 const session   = require('express-session');
+
 const User           = require('./models/users');
 const cors           = require('cors');
 mongoose.Promise     = require('bluebird');
+const flash = require('express-flash');
 const routes         = require('./config/routes');
 const app            = express();
 
@@ -19,6 +21,7 @@ mongoose.Promise = require('bluebird');
 
 app.set('view engine', 'ejs');
 app.set('views', `${__dirname}/views`);
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.static(`${__dirname}/public`));
@@ -49,6 +52,7 @@ app.use((req, res, next) => {
     .then(user => {
       if(!user) {
         return req.session.regenerate(() => {
+          
           req.flash('danger', 'You must be logged in to view this content');
           res.redirect('/');
         });
@@ -64,7 +68,7 @@ app.use((req, res, next) => {
       next();
     });
 });
-
+app.use(flash());
 app.use(routes);
 
 app.listen(port, () => console.log(`Express up and running on port: ${port}`));

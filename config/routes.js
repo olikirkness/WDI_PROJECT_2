@@ -3,44 +3,44 @@ const router  = express.Router();
 
 const statics = require('../controllers/statics');
 const lists = require('../controllers/lists');
-// const listItems = require('../controllers/listItems');
 const users = require('../controllers/users');
-
+const comments = require('../controllers/comment');
 const registrations = require('../controllers/registrations');
 const sessions = require('../controllers/sessions');
 
-// function secureRoute(req, res, next) {
-//   if (!req.session.userId) {
-//     return req.session.regenerate(() => {
-//       req.flash('danger', 'You must be logged in to view this content');
-//       res.redirect('/login');
-//     });
-//   }
-//
-//   return next();
-// }
+function secureRoute(req, res, next) {
+  if (!req.session.userId) {
+    return req.session.regenerate(() => {
+      console.log('hello');
+      req.flash('danger', 'You must be logged in to view this content.');
+      res.redirect('/login');
+    });
+  }
+  return next();
+}
 
 router.route('/')
   .get(statics.homepage);
 
 router.route('/lists')
   .get(lists.index)
-  .post(lists.create);
+  .post(secureRoute, lists.create);
 
 router.route('/lists/new')
-  .get(lists.new);
+  .get(secureRoute, lists.new);
 
 router.route('/lists/:id')
-  .get(lists.show)
-  .delete(lists.delete)
-  .post(lists.update);
+  .get(secureRoute, lists.show)
+  .delete(secureRoute, lists.delete)
+  .post(secureRoute, comments.create)
+  .post(secureRoute, lists.update);
 
 
 router.route('/lists/:id/edit')
   .get(lists.edit);
 
-// router.route('/lists/:listId/listItems/:createdItemIds')
-//   .delete(listItems.delete);
+router.route('/lists/:listId/comments/:commentId')
+  .delete(comments.delete);
 
 
 router.route('/register')
@@ -55,6 +55,6 @@ router.route('/logout')
   .get(sessions.delete);
 
 router.route('/user/:id')
-  .get(users.show);
+  .get(secureRoute, users.show);
 
 module.exports = router;

@@ -1,14 +1,16 @@
 
-<div class="container">
+<div class="container" >
   <div class="row">
+
     <h1><%=list.name%></h1>
     <h2><%=list.location%></h2>
 
     <% for (var i = 0; i < list.items.length; i++) {%>
-      <ul class="col s6 offset-s3">
+      <div class="listItemLat" data-lat="<%=list.items[i].lat%>"></div>
+      <div class="listItemLong" data-lat="<%=list.items[i].long%>"></div>
+      <div class="listItemName" data-name="<%=list.items[i].name%>"></div>
+      <ul class="col s6 offset-s3 blue">
         <li><h4><%=list.items[i].name%></h4></li>
-        <li><%=list.items[i].lat%></li>
-        <li><%=list.items[i].long%></li>
         <li><%=list.items[i].category%></li>
         <% if (list.items[i].url){ %>
           <li>Visit their website <a href="<%=list.items[i].url%>">here</a></li>
@@ -30,5 +32,32 @@
       <%}%>
   </div>
 
+<a class="showMap btn">Show on map</a>
 
   <h4>Created by: <%=list.createdBy.username%></h4>
+
+
+  <h4>Comments</h4>
+
+<form action="/lists/<%= list._id %>" method="post">
+  <input type="text" name="body">
+  <input type="submit" value="Post Comment">
+</form>
+
+<ul>
+  <% list.comments.forEach(comment => { %>
+    <li><p><%= comment.body %> <%= comment.commentedBy.username %></p>
+      <% if (comment.commentedBy._id.toString() === locals.user.id.toString()){%>
+        <form action="/lists/<%= list._id%>/comments/<%=comment._id%>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input class="btn btn-danger"type="submit" value="Delete Comment">
+        </form>
+      <%}%>
+
+    </li>
+  <% }) %>
+</ul>
+
+<div id="map">
+
+</div>

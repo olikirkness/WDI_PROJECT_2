@@ -2,6 +2,26 @@ html {
   // background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
   color: #2d5c7f;
 }
+#map{
+  height: 600px;
+  width: 600px;
+}
+.blue{
+  background-color: #2d5c7f,
+  color: white
+}
+.yellow{
+  background-color: #2d5c7f,
+  color: white
+}
+.orange{
+  background-color: #2d5c7f,
+  color: white
+}
+.red{
+  background-color: #2d5c7f,
+  color: white
+}
 
 .venue{
   margin-top: 10px;
@@ -48,6 +68,14 @@ a{
 .userList{
   border: 2px solid #777;
   margin: 10px 10px;
+}
+.imageFrame{
+  height: 230px;
+  overflow: hidden;
+}
+.index-img{
+  // height: 100%;
+  width: 100%;
 }
 
 .error, .titleError{

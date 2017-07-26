@@ -1,17 +1,25 @@
 var itinerist = itinerist || {};
 
 itinerist.setUp = function(){
+
+  console.log('hello');
+
+  $('.showMap').click(function(){
+    itinerist.map();
+  });
+
   this.submitBtn = $('.submit');
   this.reSubmitBtn = $('.reSubmit');
   this.submitStatus = false;
-  // this.googlePhotos();
-  initialize();
-  function initialize() {
-    var input = document.getElementById('destinationAuto');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-  }
+  $('.destination').focus(function(){
 
-  google.maps.event.addDomListener(window, 'load', initialize);
+    // function initialize() {
+      var input = document.getElementById('destinationAuto');
+      new google.maps.places.Autocomplete(input);
+    // }
+    // google.maps.event.addDomListener(window, 'load', initialize);
+  });
+
 
   this.submitBtn.click(function(){
     if($('.listTitle').val() === ''){
@@ -37,28 +45,6 @@ itinerist.setUp = function(){
 };
 
 
-// itinerist.googlePhotos = function() {
-//   this.allLists = $('.index-img');
-//   this.listLocations = $('.listLocation');
-//   console.log(this.listLocations[1]);
-//
-//   for (var i = 0; i < this.listLocations.length; i++) {
-//     console.log(itinerist.listLocations[i].text());
-//     //
-//   }
-//
-//
-// };
-
-
-//   $
-//   .get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyDJ3zzkIHjjutvXMT2yPX5C6b28OB_FQ_8')
-//   .done(data => {
-//     console.log(data);
-//   });
-// };
-
-
 
 itinerist.formSubmit = function(){
 
@@ -69,37 +55,31 @@ itinerist.getData = function(){
 
   this.location = $('.destination').val();
   this.city = this.location.split(',')[0];
-  console.log(this.city);
   this.usedIndex = [51];
 
   $.get(`https://api.foursquare.com/v2/venues/search?near=${this.location}&limit=50&client_id=R3KIGZLISIYT0YMGLQDNR2WKCN4LA1CMKNQSLJCLGDBIQC1L&client_secret=GQK1QDAAYHM5FOXS3NNHIRPXDYM1ZKB2N4IKFWEBKNPWJ0VW&v=20170720`)
   .done(data => {
+    this.photo = 'https://www.roughguides.com/wp-content/uploads/2016/03/Sings-660x420.jpg';
+    this.title = $('.listTitle').val();
+    this.list = {
+      name: this.title,
+      location: this.location,
+      photo: this.photo,
+      items: []
+    };
 
     $.get(`https://api.unsplash.com/photos/random?client_id=9de52c542a6d745606274c8b0767976044f4acab3c341ffa92db5bb79edbb93a&query=${this.city}&featured=true`)
     .done(response => {
 
-      console.log(response);
-      this.photo = response.urls.small;
-      console.log(this.photo, 'line 86');
-      this.title = $('.listTitle').val();
-      this.list = {
-        name: this.title,
-        location: this.location,
-        photo: this.photo,
-        items: []
-      };
+      this.list.photo = response.urls.small;
 
-      console.log(this.list);
+    })
+    .fail(console.log('error'));
 
-    });
-    console.log(this.photo, '<------------');
-
-    console.log(this.location);
 
     this.form = $('form');
     this.form.css('display', 'none');
 
-    console.log(this.list);
 
     this.itemUl = $(`<ul class="searchListItems"></ul>`).appendTo($('.container'));
 
@@ -121,8 +101,6 @@ itinerist.getData = function(){
 
     this.venueSelect.click(function(){
       itinerist.index = $(this).index();
-      console.log(`${$(this).index()} uibweiufbwibf`);
-      console.log(data.response.venues);
 
       itinerist.itemName = data.response.venues[itinerist.index].name;
       itinerist.itemLat = data.response.venues[itinerist.index].location.lat;
@@ -137,7 +115,6 @@ itinerist.getData = function(){
         url: itinerist.itemUrl,
         category: itinerist.itemCategory
       };
-      console.log(itinerist.list);
 
       itinerist.itemClick();
     });
@@ -164,7 +141,6 @@ itinerist.itemClick = function(){
   itinerist.itemClicked = $('.venue')[itinerist.index];
   for (var i = 0; i < this.usedIndex.length; i++) {
     this.check = false;
-    console.log($('.venue')[this.index]);
     if (this.index === this.usedIndex[i]) {
       $(itinerist.itemClicked).css('background-color', '#ddd');
 
@@ -176,7 +152,7 @@ itinerist.itemClick = function(){
     }else if(i === this.usedIndex.length-1){
       this.check = true;
       this.usedIndex.push(this.index);
-      this.list.items.push(this.listItem);
+      itinerist.list.items.push(this.listItem);
     }
     if(this.check){
       $(itinerist.itemClicked).css('background-color', '#ff8f56');
@@ -207,11 +183,9 @@ itinerist.submitForm = function(){
 
   }else{
     if(this.title){
-      console.log(itinerist);
       $.post(`/lists/${this.id}`, this.list)
       .done(function(){
         itinerist.setUp();
-        console.log(this.list);
         window.location.href='/lists';
       })
       .fail(function(err){
@@ -224,6 +198,70 @@ itinerist.submitForm = function(){
     }
   }
 
+
+
 };
 
+itinerist.map = function(){
+
+
+  const latArray= [];
+  const longArray= [];
+  this.latSum = 0;
+  this.longSum = 0;
+  // AIzaSyA6Py5yoDo_wrAbYHn0LCJ8kCW81mUQGKo
+  for (var i = 0; i < $('.listItemLat').length; i++) {
+    latArray.push($('.listItemLat')[i].dataset.lat);
+    this.latSum += parseFloat( $('.listItemLat')[i].dataset.lat);
+    this.longSum += parseFloat( $('.listItemLong')[i].dataset.lat);
+    longArray.push($('.listItemLong')[i].dataset.long);
+  }
+  this.latAve = this.latSum/latArray.length;
+  this.longAve = this.longSum/longArray.length;
+  console.log(this.latAve);
+  console.log(this.longAve);
+
+  const map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 20,
+    center: new google.maps.LatLng(this.latAve, this.longAve)
+  });
+
+  this.bounds  = new google.maps.LatLngBounds();
+
+  for (var a = 0; a < $('.listItemLat').length; a++) {
+    this.marker = new google.maps.Marker({
+      position: {lat: parseFloat( $('.listItemLat')[a].dataset.lat), lng: parseFloat( $('.listItemLong')[a].dataset.lat) },
+      map: map,
+      clickable: true
+    });
+
+    var loc = new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng());
+    this.bounds.extend(loc);
+
+    this.marker.addListener('click',function() {
+      infowindow.open(map, this);
+      console.log(this);
+
+
+      // const markerIndex = indexOf(this)
+      // console.log($('.listItemName')[a]);
+    });
+    var infowindow = new google.maps.InfoWindow({
+      content: $('.listItemName')[a].dataset.name
+    });
+    console.log(itinerist.marker);
+
+  }
+
+
+
+
+
+
+  map.fitBounds(this.bounds);
+
+};
+
+
 $(itinerist.setUp.bind(itinerist));
+/* global google:ignore */

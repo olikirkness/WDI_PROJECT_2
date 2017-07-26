@@ -68,7 +68,6 @@ function listsShow(req, res, next){
   .populate('items')
   .exec()
   .then((list) => {
-    console.log(list);
     if(!list) return res.status(404).render('statics/404');
     res.render('lists/show', { list });
   })
@@ -91,7 +90,6 @@ function listsUpdate(req, res, next) {
   Lists
   .findById(req.params.id)
   .then((list) => {
-    console.log('this is the list', list);
     return Items
     .find({_id: {$in: list.items}})
     .remove()
@@ -102,14 +100,11 @@ function listsUpdate(req, res, next) {
       .create(items);
     })
     .then((createdItems) =>{
-      console.log('createdItems', createdItems);
       if(!list)
         return res.status(404).render('statics/404');
-      console.log(createdItems);
       const createdItemIds = createdItems.map((item) => item._id);
       list.items = createdItemIds;
       for(const field in req.body) {
-        console.log(field);
         if (field !== 'items') {
           list.set(field, req.body[field]);
         }
