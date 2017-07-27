@@ -1,15 +1,16 @@
 
 
-<div class="container">
+<div class="container main">
   <div class="row">
     <div class="col s8 offset-s2 form">
       <h3>edit</h3>
       <div class="col s12 titleError">
       </div>
-      <div class="input-field">
-        <i class="large material-icons prefix">create</i>
+      <div class="input-field input">
+        <i class="large grey-text material-icons prefix">create</i>
+        <label class="active grey-text label" for="listTitle">Give your list a title</label>
         <input class="listTitle" type="text" class="validate" value="<%=list.name%>">
-        <label class="active" for="listTitle">Give your list a title</label>
+
       </div>
     </div>
   </div>
@@ -17,19 +18,21 @@
     <div class="col s8 offset-s2 form">
       <div class="col s12 error"></div>
       <div class="input-field">
-        <i class="large material-icons prefix">add_location</i>
+        <i class="large grey-text material-icons prefix">add_location</i>
         <input id="destinationAuto" type="text" class="validate destination" value="<%=list.location%>">
         <label class="active" for="destination"></label>
       </div>
     </div>
   </div>
 </div>
-
+<div class="container">
   <% include ../partials/categories %>
+</div>
+
 
   <div class="row">
-    <div class="col s4 form offset-s4 submit reSubmit">
-      <a href="#"class="btn reSubmitBtn" type="button" name="search">Search</a>
+    <div class="col s4 form btn submit offset-s4 reSubmitBtn">
+      <span>Search</span>
     </div>
   </div>
 </div>

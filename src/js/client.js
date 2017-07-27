@@ -9,7 +9,7 @@ itinerist.setUp = function(){
   });
 
   this.submitBtn = $('.submitBtn');
-  this.reSubmitBtn = $('.reSubmit');
+  this.reSubmitBtn = $('.reSubmitBtn');
   this.submitStatus = false;
   $('.destination').focus(function(){
 
@@ -17,65 +17,28 @@ itinerist.setUp = function(){
     new google.maps.places.Autocomplete(input);
 
   });
-  // 4d4b7105d754a06374d81259 FOOD
-  // 4bf58dd8d48988d181941735 Museum
-  // 4d4b7105d754a06376d81259 Night life
-  // 4bf58dd8d48988d1e5931735 music venue
-  // 4d4b7105d754a06373d81259 events
-  // 4d4ae6fc7a7b7dea34424761 fried chicken
-  // 4bf58dd8d48988d116941735 bar
-  // 4bf58dd8d48988d11b941735 pub
-  // 52e81612bcbc57f1066b7a2d squash
   this.categories = [];
-  this.clickCount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  this.clickCount = [];
+  for (var i = 0; i < $('.categoryBtn').length; i++) {
+    this.clickCount.push(0);
+  }
   $('.categoryBtn').click(function(e){
     itinerist.museumClick++;
     $(this).css('background-color', '#984a59');
     const index = $.inArray(this, $('.categoryBtn'));
     itinerist.clickCount[index]++;
     if(itinerist.clickCount[index] % 2 === 0){
-      $(this).css('background-color', 'grey');
+      $(this).css('background-color', '#aaa');
       itinerist.catIndex = itinerist.categories.indexOf(e.currentTarget.dataset.loc);
       itinerist.categories.splice(itinerist.catIndex, 1);
     }else{
       itinerist.categories.push(e.currentTarget.dataset.loc);
     }
   });
-  // $('.museum').click(function(){
-  //   itinerist.museumClick++;
-  //   $('.museum').css('background-color', '#984a59');
-  //   if(itinerist.museumClick % 2 === 0){
-  //     $('.museum').css('background-color', 'grey');
-  //     itinerist.catIndex = itinerist.categories.indexOf('4bf58dd8d48988d181941735');
-  //     itinerist.categories.splice(itinerist.catIndex, 1);
-  //   }else{
-  //     itinerist.categories.push('4bf58dd8d48988d181941735');
-  //   }
-  // });
-  // $('.food').click(function(){
-  //   itinerist.foodClick++;
-  //   $('.food').css('background-color', '#984a59');
-  //   if(itinerist.foodClick % 2 === 0){
-  //     $('.food').css('background-color', 'grey');
-  //     itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06374d81259');
-  //     itinerist.categories.splice(itinerist.catIndex, 1);
-  //   }else{
-  //     itinerist.categories.push('4d4b7105d754a06374d81259');
-  //   }
-  // });
-  // $('.night').click(function(){
-  //   itinerist.nightClick++;
-  //   $('.night').css('background-color', '#984a59');
-  //   if(itinerist.nightClick % 2 === 0){
-  //     $('.night').css('background-color', 'grey');
-  //     itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06376d81259');
-  //     itinerist.categories.splice(itinerist.catIndex, 1);
-  //   }else{
-  //     itinerist.categories.push('4d4b7105d754a06376d81259');
-  //   }
-  // });
+
 
   this.submitBtn.click(function(){
+    console.log('submit');
     if($('.listTitle').val() === ''){
       if($('.pTitle')){
         $('.pTitle').remove();
@@ -87,6 +50,7 @@ itinerist.setUp = function(){
     }
   });
   this.reSubmitBtn.click(function(){
+    console.log('reSubmit');
     itinerist.submitStatus = true;
     if($('.listTitle').val() === ''){
       if($('.pTitle')){
@@ -101,6 +65,7 @@ itinerist.setUp = function(){
 };
 
 itinerist.getData = function(){
+  console.log('get data');
 
   this.location = $('.destination').val();
   this.city = this.location.split(',')[0];
@@ -114,6 +79,7 @@ itinerist.getData = function(){
 
   $.get(`https://api.foursquare.com/v2/venues/search?near=${this.location}&limit=50&client_id=R3KIGZLISIYT0YMGLQDNR2WKCN4LA1CMKNQSLJCLGDBIQC1L&client_secret=GQK1QDAAYHM5FOXS3NNHIRPXDYM1ZKB2N4IKFWEBKNPWJ0VW&v=20170720${this.searchCategories}`)
   .done(data => {
+    console.log(data);
     this.photo = 'https://www.roughguides.com/wp-content/uploads/2016/03/Sings-660x420.jpg';
     this.title = $('.listTitle').val();
     this.list = {
@@ -133,16 +99,17 @@ itinerist.getData = function(){
 
     this.form = $('.form');
     this.form.css('display', 'none');
-    this.itemUl = $(`<ul class="searchListItems"></ul>`).appendTo($('.container'));
+    this.itemUl = $(`<ul class="searchListItems"></ul>`).appendTo($('.main'));
 
     for (var i = 0; i < data.response.venues.length; i++) {
       $(`<div class="venue"><li class="venueName">${data.response.venues[i].name}</li></div>`).appendTo($('.searchListItems'));
       if(data.response.venues[i].categories.length !==0){
+        console.log('category');
         $(`<li class="category">${data.response.venues[i].categories[0].name}</li>"`).appendTo($('.venue')[i]);
       }
     }
-    $('<button class="btn submitBtn" type="button" name="button">Submit</button>').appendTo($('.container'));
-    this.submitBtn = $('.submitBtn');
+    $('<button class="btn submitFormBtn" type="button" name="button">Submit</button>').appendTo($('.main'));
+    this.submitBtn = $('.submitFormBtn');
     this.submitBtn.click(function(){
       itinerist.submitForm();
     });
@@ -171,7 +138,8 @@ itinerist.getData = function(){
     });
 
   })
-  .fail(function() {
+  .fail(function(err) {
+    console.log(err);
     if($('.p')){
       $('.p').remove();
     }

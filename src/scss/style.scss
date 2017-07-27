@@ -104,13 +104,21 @@ html {
 .categories{
   text-align: center;
   .btn{
-    background-color: grey;
+    background-color: #aaa;
     margin: 10px;
     border-radius: 20px;
   }
 }
 .submit{
   text-align: center;
+}
+.label{
+  margin-bottom: -20px !important;
+  height: 10px !important;
+}
+.input{
+
+  margin-top: 60px !important;
 }
 
 nav{
