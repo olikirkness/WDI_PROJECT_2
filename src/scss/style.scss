@@ -3,15 +3,39 @@ html {
   color: #aaa;
   font-family: 'Raleway', sans-serif;
 }
-#map{
-  height: 600px;
-  width: 600px;
+.map{
+  #map{
+    height: 550px;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    margin: 10px auto;
+    box-shadow: -1px 5px 44px -12px rgba(0,0,0,0.8);
+  }
+
+  .close{
+
+    position: relative;
+    z-index: 3;
+    float: right;
+    margin: 20px 10px;
+  }
+  margin-top: -200px;
+  width: 72%;
+  position: fixed;
+
 }
-.blue{
-  background-color: #2d5c7f;
-  color: white;
+.buttons{
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
+.blue{
+  background-color: red;
+  color: white;
+  width: 100%
+
+}
 
 .venue{
   margin-top: 10px;
@@ -19,12 +43,15 @@ html {
   padding-left: 30px;
   padding-top: 15px;
   padding-bottom: 15px;
+  border-radius: 8px;
 }
 .btn{
   background-color: #ff8f56;
+  box-shadow: none;
 }
 .btn:hover{
   background-color: #984a59;
+  box-shadow: none;
 }
 .show-header{
   width: 100%;
@@ -74,8 +101,20 @@ html {
 .input-field input{
      color: #000;
    }
+.categories{
+  text-align: center;
+  .btn{
+    background-color: grey;
+    margin: 10px;
+    border-radius: 20px;
+  }
+}
+.submit{
+  text-align: center;
+}
 
 nav{
+
   background-color: white;
   box-shadow: none;
   border-bottom: 2px solid #ccc;
@@ -118,13 +157,40 @@ a{
 .titleError{
   margin-bottom: 10px;
 }
-
-
+.submitBtn{
+  margin-bottom: 40px;
+}
 
 .category{
   font-size: 15px;
+  color: #555;
+}
+.categoryBtn{
+
 }
 
 .venueName{
   font-size: 20px;
+  color: #2d5c7f;
+}
+.homeImg{
+  left: 20%;
+  width: 60%;
+  position: absolute;
+  z-index: 1;
+  top: 60px;
+}
+.homepage{
+  background-image: url('');
+  position: relative;
+  margin-top: -30px;
+
+}
+
+.homeBackImg{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 0;
+
 }

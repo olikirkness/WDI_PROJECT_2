@@ -28,6 +28,8 @@ function listsNew(req, res){
 }
 
 function listsCreate(req, res){
+
+  console.log('________________________________');
   req.body.createdBy = req.user._id;
   const items = req.body.items;
   const list = req.body;
@@ -105,6 +107,7 @@ function listsUpdate(req, res, next) {
       const createdItemIds = createdItems.map((item) => item._id);
       list.items = createdItemIds;
       for(const field in req.body) {
+        console.log(req.body);
         if (field !== 'items') {
           list.set(field, req.body[field]);
         }
@@ -113,6 +116,7 @@ function listsUpdate(req, res, next) {
     });
   })
   .then((list) => res.redirect(303, `/lists/${list.id}`))
+  .catch(next);
 
 }
 

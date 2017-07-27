@@ -1,38 +1,39 @@
 
 
 <div class="container" onload="">
-  <h1>new</h1>
-    <form class="col s12">
-      <div class="row">
-        <div class="col s12 titleError">
-        </div>
-        <div class="input-field col s12"><i class="large material-icons prefix">create</i>
-          <input class="listTitle" type="text" class="validate">
-          <label class="active" for="listTitle">Give your list a title</label>
-        </div>
-        <div class="row">
-          <div class="col s12 error">
-
-          </div>
-        </div>
-<div class="row">
-  <div class="input-field col s12">
-     <i class="large material-icons prefix">add_location</i>
-    <input  id="destinationAuto" type="text" class="validate destination">
-    <label class="active" for="destination"></label>
+  <div class="row">
+    <div class="col s8 offset-s2 form">
+      <h3>new</h3>
+      <div class="titleError">
+      </div>
+      <div class="input-field"><i class="large material-icons prefix">create</i>
+        <input class="listTitle" type="text" class="validate">
+        <label class="active" for="listTitle">Give your list a title</label>
+      </div>
+    </div>
   </div>
-
-</div>
+  <div class="row">
+    <div class="col s8 form offset-s2">
+      <div class="error">
 
       </div>
+      <div class="input-field">
+         <i class="large material-icons prefix">add_location</i>
+        <input  id="destinationAuto" type="text" class="validate destination">
+        <label class="active" for="destination"></label>
+      </div>
+    </div>
+  </div>
 
       <% include ../partials/categories %>
 
       <div class="row">
-        <a href="#" class="btn submit" type="button" name="search">Search</a>
+        <div class="col s4 form offset-s4 submit">
+          <a href="#" class="btn submitBtn" type="button" name="search">Search</a>
+        </div>
       </div>
 
-    </form>
+
 
 
 

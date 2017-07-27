@@ -1,74 +1,83 @@
 
 <div class="show-header">
   <img src="<%=list.photo%>" alt="">
-  <div class="container">
-    <div class="row">
-      <h1><%=list.name%></h1>
-      <h2><%=list.location%></h2>
-    </div>
+</div>
+<div class="container ">
+  <div class="map">
 
   </div>
-
 </div>
 
-<div class="container" >
+
+<div class="container">
+
   <div class="row">
+    <div class="col s8 offset-s2">
+      <h3><%=list.name%></h3>
+      <h4><%=list.location%></h4>
+    </div>
+  </div>
 
-
+  <div class="row">
 
     <% for (var i = 0; i < list.items.length; i++) {%>
       <div class="listItemLat" data-lat="<%=list.items[i].lat%>"></div>
       <div class="listItemLong" data-lat="<%=list.items[i].long%>"></div>
       <div class="listItemName" data-name="<%=list.items[i].name%>"></div>
-      <ul class="col s6 offset-s3 blue">
+
+      <ul class="col s8 offset-s2">
         <li><h4><%=list.items[i].name%></h4></li>
         <li><%=list.items[i].category%></li>
-        <% if (list.items[i].url){ %>
-          <li>Visit their website <a href="<%=list.items[i].url%>">here</a></li>
+      <% if (list.items[i].url){ %>
+        <li>Visit their website <a href="<%=list.items[i].url%>">here</a></li>
         <%}%>
       </ul>
-      <%}%>
+    <%}%>
 
-      <%if(!locals.user){%>
+  </div>
+  <div class="row buttons">
 
-      <%}else if(locals.user.id === list.createdBy.id){%>
-        <div class="row">
-          <a href="/lists/<%= list.id %>/edit"class="btn edit" type="button" name="search">Edit</a>
-        </div>
+    <%if(locals.user.id === list.createdBy.id){%>
+      <div class="col s4">
+        <a href="/lists/<%= list.id %>/edit"class="btn edit" type="button" name="search">Edit</a>
+      </div>
+      <div class="col s4">
         <form method="POST" action="/lists/<%= list.id %>">
           <input type="hidden" name="_method" value="DELETE">
           <button class="btn btn-danger">Delete</button>
         </form>
-        </div>
+      </div>
       <%}%>
+      <div class="col s4">
+        <a class="showMap btn">Show on map</a>
+      </div>
+    </div>
   </div>
 
-<a class="showMap btn">Show on map</a>
 
-  <h4>Created by: <%=list.createdBy.username%></h4>
+<div class="container">
+  <div class="row">
+    <h4>Created by: <%=list.createdBy.username%></h4>
 
+    <h4>Comments</h4>
 
-  <h4>Comments</h4>
+    <form action="/lists/<%= list._id %>" method="post">
+      <input type="text" name="body">
+      <input type="submit" class="btn" value="Post Comment">
+    </form>
+      <ul>
+        <% list.comments.forEach(comment => { %>
+          <li><p><%= comment.commentedBy.username %>: <%= comment.body %> </p>
+          <% if (comment.commentedBy._id.toString() === locals.user.id.toString()){%>
+            <form action="/lists/<%= list._id%>/comments/<%=comment._id%>" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <input class="btn btn-danger"type="submit" value="Delete Comment">
+            </form>
+            <%}%>
+          </li>
+         <% }) %>
+    </ul>
 
-<form action="/lists/<%= list._id %>" method="post">
-  <input type="text" name="body">
-  <input type="submit" value="Post Comment">
-</form>
-
-<ul>
-  <% list.comments.forEach(comment => { %>
-    <li><p><%= comment.body %> <%= comment.commentedBy.username %></p>
-      <% if (comment.commentedBy._id.toString() === locals.user.id.toString()){%>
-        <form action="/lists/<%= list._id%>/comments/<%=comment._id%>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <input class="btn btn-danger"type="submit" value="Delete Comment">
-        </form>
-      <%}%>
-
-    </li>
-  <% }) %>
-</ul>
-
-<div id="map">
+  </div>
 
 </div>

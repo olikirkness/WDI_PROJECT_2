@@ -4,10 +4,11 @@ itinerist.setUp = function(){
   $('.button-collapse').sideNav();
 
   $('.showMap').click(function(){
+    console.log('hello');
     itinerist.map();
   });
 
-  this.submitBtn = $('.submit');
+  this.submitBtn = $('.submitBtn');
   this.reSubmitBtn = $('.reSubmit');
   this.submitStatus = false;
   $('.destination').focus(function(){
@@ -19,45 +20,60 @@ itinerist.setUp = function(){
   // 4d4b7105d754a06374d81259 FOOD
   // 4bf58dd8d48988d181941735 Museum
   // 4d4b7105d754a06376d81259 Night life
+  // 4bf58dd8d48988d1e5931735 music venue
+  // 4d4b7105d754a06373d81259 events
+  // 4d4ae6fc7a7b7dea34424761 fried chicken
+  // 4bf58dd8d48988d116941735 bar
+  // 4bf58dd8d48988d11b941735 pub
+  // 52e81612bcbc57f1066b7a2d squash
   this.categories = [];
-  this.museumClick = 0;
-  this.foodClick = 0;
-  this.nightClick = 0;
-  $('.museum').click(function(){
+  this.clickCount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  $('.categoryBtn').click(function(e){
     itinerist.museumClick++;
-    $('.museum').css('background-color', '#984a59');
-    if(itinerist.museumClick % 2 === 0){
-      $('.museum').css('background-color', '#ff8f56');
-      itinerist.catIndex = itinerist.categories.indexOf('4bf58dd8d48988d181941735');
+    $(this).css('background-color', '#984a59');
+    const index = $.inArray(this, $('.categoryBtn'));
+    itinerist.clickCount[index]++;
+    if(itinerist.clickCount[index] % 2 === 0){
+      $(this).css('background-color', 'grey');
+      itinerist.catIndex = itinerist.categories.indexOf(e.currentTarget.dataset.loc);
       itinerist.categories.splice(itinerist.catIndex, 1);
     }else{
-      itinerist.categories.push('4bf58dd8d48988d181941735');
+      itinerist.categories.push(e.currentTarget.dataset.loc);
     }
   });
-  $('.food').click(function(){
-    itinerist.foodClick++;
-    $('.food').css('background-color', '#984a59');
-    if(itinerist.foodClick % 2 === 0){
-      $('.food').css('background-color', '#ff8f56');
-      itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06374d81259');
-      itinerist.categories.splice(itinerist.catIndex, 1);
-    }else{
-      itinerist.categories.push('4d4b7105d754a06374d81259');
-    }
-  });
-  $('.night').click(function(){
-    itinerist.nightClick++;
-    $('.night').css('background-color', '#984a59');
-    if(itinerist.nightClick % 2 === 0){
-      $('.night').css('background-color', '#ff8f56');
-      itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06376d81259');
-      itinerist.categories.splice(itinerist.catIndex, 1);
-    }else{
-      itinerist.categories.push('4d4b7105d754a06376d81259');
-    }
-  });
-
-
+  // $('.museum').click(function(){
+  //   itinerist.museumClick++;
+  //   $('.museum').css('background-color', '#984a59');
+  //   if(itinerist.museumClick % 2 === 0){
+  //     $('.museum').css('background-color', 'grey');
+  //     itinerist.catIndex = itinerist.categories.indexOf('4bf58dd8d48988d181941735');
+  //     itinerist.categories.splice(itinerist.catIndex, 1);
+  //   }else{
+  //     itinerist.categories.push('4bf58dd8d48988d181941735');
+  //   }
+  // });
+  // $('.food').click(function(){
+  //   itinerist.foodClick++;
+  //   $('.food').css('background-color', '#984a59');
+  //   if(itinerist.foodClick % 2 === 0){
+  //     $('.food').css('background-color', 'grey');
+  //     itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06374d81259');
+  //     itinerist.categories.splice(itinerist.catIndex, 1);
+  //   }else{
+  //     itinerist.categories.push('4d4b7105d754a06374d81259');
+  //   }
+  // });
+  // $('.night').click(function(){
+  //   itinerist.nightClick++;
+  //   $('.night').css('background-color', '#984a59');
+  //   if(itinerist.nightClick % 2 === 0){
+  //     $('.night').css('background-color', 'grey');
+  //     itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06376d81259');
+  //     itinerist.categories.splice(itinerist.catIndex, 1);
+  //   }else{
+  //     itinerist.categories.push('4d4b7105d754a06376d81259');
+  //   }
+  // });
 
   this.submitBtn.click(function(){
     if($('.listTitle').val() === ''){
@@ -90,7 +106,7 @@ itinerist.getData = function(){
   this.city = this.location.split(',')[0];
   this.usedIndex = [51];
 
-  if(this.categories. length > 0){
+  if(this.categories.length > 0){
     this.searchCategories = `&categoryId=${this.categories.toString()}`;
   }else{
     this.searchCategories = '';
@@ -115,7 +131,7 @@ itinerist.getData = function(){
     })
     .fail(console.log('error'));
 
-    this.form = $('form');
+    this.form = $('.form');
     this.form.css('display', 'none');
     this.itemUl = $(`<ul class="searchListItems"></ul>`).appendTo($('.container'));
 
@@ -210,13 +226,14 @@ itinerist.submitForm = function(){
 
   }else{
     if(this.title){
+      console.log('PUT');
       $.ajax({
         url: `/lists/${this.id}`,
         method: 'PUT',
         data: this.list,
         success: function(){
           itinerist.setUp();
-          //window.location.href=`/lists`;
+          window.location.href=`/lists`;
         },
         error: function(err){
           console.log(err);
@@ -244,7 +261,8 @@ itinerist.map = function(){
   }
   this.latAve = this.latSum/latArray.length;
   this.longAve = this.longSum/longArray.length;
-
+  $('<div id="map"></div>').appendTo($('.map'));
+  $('<div class="btn close"><span>Close</span></div>').appendTo($('.map'));
   const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 20,
     center: new google.maps.LatLng(this.latAve, this.longAve)
@@ -262,14 +280,27 @@ itinerist.map = function(){
     var loc = new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng());
     this.bounds.extend(loc);
 
-    this.marker.addListener('click',function() {
+    this.marker.addListener('click',function(e) {
+      console.log(e);
+      // console.log($('.listItemName').indexOf(e.target));
       infowindow.open(map, this);
+
     });
     var infowindow = new google.maps.InfoWindow({
       content: $('.listItemName')[a].dataset.name
     });
+
   }
+
+
+
+
   map.fitBounds(this.bounds);
+
+  $('.close').click(function(){
+    $('#map').remove();
+    $('.close').remove();
+  });
 };
 
 $(itinerist.setUp.bind(itinerist));
