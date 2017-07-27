@@ -2,23 +2,35 @@
 
 <div class="container">
   <div class="row">
+
     <form method="POST" action="/lists/<%= list.id %>" class="col s12 editForm">
+      <div class="col s12 titleError">
+      </div>
       <input type="hidden" name="_method" value="PUT">
       <div class="row">
         <div class="input-field col s12">
+          <i class="large material-icons prefix">create</i>
           <input class="listTitle" type="text" class="validate" value="<%=list.name%>">
           <label class="active" for="listTitle">Give your list a title</label>
         </div>
+        <div class="row">
+          <div class="col s12 error">
+
+          </div>
+        </div>
         <div class="input-field col s12">
-          <input class="destination" type="text" class="validate" value="<%=list.location%>">
-          <label class="active" for="destination">Where are are going?</label>
+          <i class="large material-icons prefix">add_location</i>
+          <input id="destinationAuto" type="text" class="validate destination" value="<%=list.location%>">
+          <label class="active" for="destination"></label>
         </div>
       </div>
 
-
+<% include ../partials/categories %>
       <div class="row">
         <a href="#"class="btn reSubmit" type="button" name="search">Search</a>
       </div>
+
+
     </form>
   </div>
 </div>

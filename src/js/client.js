@@ -1,8 +1,7 @@
 var itinerist = itinerist || {};
 
 itinerist.setUp = function(){
-  $(".button-collapse").sideNav();
-  console.log('hello');
+  $('.button-collapse').sideNav();
 
   $('.showMap').click(function(){
     itinerist.map();
@@ -13,40 +12,76 @@ itinerist.setUp = function(){
   this.submitStatus = false;
   $('.destination').focus(function(){
 
-    // function initialize() {
-      var input = document.getElementById('destinationAuto');
-      new google.maps.places.Autocomplete(input);
-    // }
-    // google.maps.event.addDomListener(window, 'load', initialize);
+    var input = document.getElementById('destinationAuto');
+    new google.maps.places.Autocomplete(input);
+
   });
+  // 4d4b7105d754a06374d81259 FOOD
+  // 4bf58dd8d48988d181941735 Museum
+  // 4d4b7105d754a06376d81259 Night life
+  this.categories = [];
+  this.museumClick = 0;
+  this.foodClick = 0;
+  this.nightClick = 0;
+  $('.museum').click(function(){
+    itinerist.museumClick++;
+    $('.museum').css('background-color', '#984a59');
+    if(itinerist.museumClick % 2 === 0){
+      $('.museum').css('background-color', '#ff8f56');
+      itinerist.catIndex = itinerist.categories.indexOf('4bf58dd8d48988d181941735');
+      itinerist.categories.splice(itinerist.catIndex, 1);
+    }else{
+      itinerist.categories.push('4bf58dd8d48988d181941735');
+    }
+  });
+  $('.food').click(function(){
+    itinerist.foodClick++;
+    $('.food').css('background-color', '#984a59');
+    if(itinerist.foodClick % 2 === 0){
+      $('.food').css('background-color', '#ff8f56');
+      itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06374d81259');
+      itinerist.categories.splice(itinerist.catIndex, 1);
+    }else{
+      itinerist.categories.push('4d4b7105d754a06374d81259');
+    }
+  });
+  $('.night').click(function(){
+    itinerist.nightClick++;
+    $('.night').css('background-color', '#984a59');
+    if(itinerist.nightClick % 2 === 0){
+      $('.night').css('background-color', '#ff8f56');
+      itinerist.catIndex = itinerist.categories.indexOf('4d4b7105d754a06376d81259');
+      itinerist.categories.splice(itinerist.catIndex, 1);
+    }else{
+      itinerist.categories.push('4d4b7105d754a06376d81259');
+    }
+  });
+
 
 
   this.submitBtn.click(function(){
     if($('.listTitle').val() === ''){
       if($('.pTitle')){
-        $('.pTitle').remove()
+        $('.pTitle').remove();
       }
       $(`<p class="pTitle">Please give your list a title.</P>`).appendTo($('.titleError'));
-
       $('.listTitle').addClass('invalid');
-
-      console.log('error');
-
     }else{
-      itinerist.formSubmit();
+      itinerist.getData();
     }
   });
   this.reSubmitBtn.click(function(){
     itinerist.submitStatus = true;
-    itinerist.formSubmit();
+    if($('.listTitle').val() === ''){
+      if($('.pTitle')){
+        $('.pTitle').remove();
+      }
+      $(`<p class="pTitle">Please give your list a title.</P>`).appendTo($('.titleError'));
+      $('.listTitle').addClass('invalid');
+    }else{
+      itinerist.getData();
+    }
   });
-};
-
-
-
-itinerist.formSubmit = function(){
-
-  this.getData();
 };
 
 itinerist.getData = function(){
@@ -55,7 +90,13 @@ itinerist.getData = function(){
   this.city = this.location.split(',')[0];
   this.usedIndex = [51];
 
-  $.get(`https://api.foursquare.com/v2/venues/search?near=${this.location}&limit=50&client_id=R3KIGZLISIYT0YMGLQDNR2WKCN4LA1CMKNQSLJCLGDBIQC1L&client_secret=GQK1QDAAYHM5FOXS3NNHIRPXDYM1ZKB2N4IKFWEBKNPWJ0VW&v=20170720`)
+  if(this.categories. length > 0){
+    this.searchCategories = `&categoryId=${this.categories.toString()}`;
+  }else{
+    this.searchCategories = '';
+  }
+
+  $.get(`https://api.foursquare.com/v2/venues/search?near=${this.location}&limit=50&client_id=R3KIGZLISIYT0YMGLQDNR2WKCN4LA1CMKNQSLJCLGDBIQC1L&client_secret=GQK1QDAAYHM5FOXS3NNHIRPXDYM1ZKB2N4IKFWEBKNPWJ0VW&v=20170720${this.searchCategories}`)
   .done(data => {
     this.photo = 'https://www.roughguides.com/wp-content/uploads/2016/03/Sings-660x420.jpg';
     this.title = $('.listTitle').val();
@@ -74,29 +115,23 @@ itinerist.getData = function(){
     })
     .fail(console.log('error'));
 
-
     this.form = $('form');
     this.form.css('display', 'none');
-
-
     this.itemUl = $(`<ul class="searchListItems"></ul>`).appendTo($('.container'));
 
     for (var i = 0; i < data.response.venues.length; i++) {
       $(`<div class="venue"><li class="venueName">${data.response.venues[i].name}</li></div>`).appendTo($('.searchListItems'));
       if(data.response.venues[i].categories.length !==0){
         $(`<li class="category">${data.response.venues[i].categories[0].name}</li>"`).appendTo($('.venue')[i]);
-        console.log(data.response.venues[i].categories[0].name);
       }
     }
     $('<button class="btn submitBtn" type="button" name="button">Submit</button>').appendTo($('.container'));
     this.submitBtn = $('.submitBtn');
-
     this.submitBtn.click(function(){
       itinerist.submitForm();
     });
 
     this.venueSelect = $('.venue');
-
     this.venueSelect.click(function(){
       itinerist.index = $(this).index();
 
@@ -107,7 +142,6 @@ itinerist.getData = function(){
       if(data.response.venues[itinerist.index].categories.length >0){
         itinerist.itemCategory = data.response.venues[itinerist.index].categories[0].name;
       }
-
 
       itinerist.listItem = {
         name: itinerist.itemName,
@@ -125,13 +159,10 @@ itinerist.getData = function(){
     if($('.p')){
       $('.p').remove();
     }
-
     $(`<p class="p">There is no data on that location. Please try something else.</P>`).appendTo($('.error'));
 
     $('.destination').addClass('invalid');
   });
-
-
 };
 
 itinerist.itemClick = function(){
@@ -146,7 +177,6 @@ itinerist.itemClick = function(){
       $(itinerist.itemClicked).css('background-color', '#ddd');
 
       this.thisIndex = this.usedIndex.indexOf(this.index);
-
       this.usedIndex.splice(this.thisIndex, 1);
       this.list.items.splice(this.thisIndex-1, 1);
       return;
@@ -159,9 +189,7 @@ itinerist.itemClick = function(){
       $(itinerist.itemClicked).css('background-color', '#ff8f56');
       break;
     }
-
   }
-
 };
 
 itinerist.submitForm = function(){
@@ -176,7 +204,6 @@ itinerist.submitForm = function(){
         console.log(err);
         alert('Something went wrong');
       });
-
     }else{
       alert('you need a title');
     }
@@ -186,22 +213,19 @@ itinerist.submitForm = function(){
       $.post(`/lists/${this.id}`, this.list)
       .done(function(){
         itinerist.setUp();
-        window.location.href='/lists';
+        window.location.href=`/lists`;
       })
       .fail(function(err){
         console.log(err);
         alert('Something went wrong');
       });
-
     }else{
       alert('you need a title');
     }
   }
-
 };
 
 itinerist.map = function(){
-
 
   const latArray= [];
   const longArray= [];
@@ -216,8 +240,6 @@ itinerist.map = function(){
   }
   this.latAve = this.latSum/latArray.length;
   this.longAve = this.longSum/longArray.length;
-  console.log(this.latAve);
-  console.log(this.longAve);
 
   const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 20,
@@ -238,23 +260,13 @@ itinerist.map = function(){
 
     this.marker.addListener('click',function() {
       infowindow.open(map, this);
-      console.log(this);
-
-
-      // const markerIndex = indexOf(this)
-      // console.log($('.listItemName')[a]);
     });
     var infowindow = new google.maps.InfoWindow({
       content: $('.listItemName')[a].dataset.name
     });
-    console.log(itinerist.marker);
-
   }
-
   map.fitBounds(this.bounds);
-
 };
-
 
 $(itinerist.setUp.bind(itinerist));
 /* global google:ignore */
