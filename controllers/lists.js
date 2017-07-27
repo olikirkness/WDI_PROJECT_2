@@ -112,8 +112,8 @@ function listsUpdate(req, res, next) {
       }
     });
   })
-  .then((list) => res.redirect(`/lists/${list.id}`))
-  .catch(next);
+  .then((list) => res.redirect(303, `/lists/${list.id}`))
+
 }
 
 

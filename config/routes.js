@@ -32,9 +32,8 @@ router.route('/lists/new')
 router.route('/lists/:id')
   .get(secureRoute, lists.show)
   .delete(secureRoute, lists.delete)
-  .post(secureRoute, lists.update)
+  .put(secureRoute, lists.update)
   .post(secureRoute, comments.create);
-
 
 router.route('/lists/:id/edit')
   .get(lists.edit);

@@ -29,7 +29,6 @@ html {
 .show-header{
   width: 100%;
   margin-top: 0px;
-
   height:200px;
   overflow: hidden;
   img{
@@ -39,13 +38,37 @@ html {
     position: relative;
   }
 }
+.form{
+  margin-top: 20px;
+  h4{
+    text-align: center;
+    margin-bottom: 50px;;
+  }
+  button{
+    margin-top: 40px;
+    width: 100%;
+    box-shadow: none;
+  }
+  button:hover{
+    box-shadow: none;
+  }
+}
+
 
 .input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
-   border-bottom: 1.2px solid #2d5c7f !important;
-   box-shadow: 0 1px 0 0 #2d5c7f !important;
+   border-bottom: 1px solid #ff8f56 !important;
+   box-shadow: 0 1px 0 0 #ff8f56 !important;
 }
 .input-field input[type=text] {
-   border-bottom: 1.2px solid #bbb !important;
+   border-bottom: 1px solid #bbb !important;
+   box-shadow: 0 1px 0 0 #bbb !important;
+}
+.input-field input[type=password]:focus, .materialize-textarea:focus:not([readonly]) {
+   border-bottom: 1px solid #ff8f56 !important;
+   box-shadow: 0 1px 0 0 #ff8f56 !important;
+}
+.input-field input[type=password] {
+   border-bottom: 1px solid #bbb !important;
    box-shadow: 0 1px 0 0 #bbb !important;
 }
 .input-field input{

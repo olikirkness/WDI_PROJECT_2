@@ -210,14 +210,18 @@ itinerist.submitForm = function(){
 
   }else{
     if(this.title){
-      $.post(`/lists/${this.id}`, this.list)
-      .done(function(){
-        itinerist.setUp();
-        window.location.href=`/lists`;
-      })
-      .fail(function(err){
-        console.log(err);
-        alert('Something went wrong');
+      $.ajax({
+        url: `/lists/${this.id}`,
+        method: 'PUT',
+        data: this.list,
+        success: function(){
+          itinerist.setUp();
+          //window.location.href=`/lists`;
+        },
+        error: function(err){
+          console.log(err);
+          alert('Something went wrong');
+        }
       });
     }else{
       alert('you need a title');
